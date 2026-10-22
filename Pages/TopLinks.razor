@@ -1,0 +1,56 @@
+<div class="Holder">
+    <div class="box">
+        <a href="">
+            <img src="EikenButton.png" class="Imager"/>
+        </a>
+    </div>
+    <div class="box">
+        <a href="">
+            <img src="Passwords.png" class="Imager"/>
+        </a>
+    </div>
+    <div class="box">
+        <a href="">
+            <img src="Games%20Button.png" class="Imager"/>
+        </a>
+    </div>
+    <div class="box">
+        <a href="/">
+            <img src="Textbookbutton.png" class="Imager"/>
+        </a>
+    </div>
+</div>
+
+<style>
+    .Holder {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        margin: 5px;
+        padding: 5px;
+    }
+
+    .Holder a {
+        display: block;
+        flex-shrink: 0; /* Prevents the links/buttons from being squished */
+        margin: 5px;
+        padding: 5px;
+        align-items: center;
+        justify-content: center;
+    }
+    .box{
+        box-shadow: black;
+       
+    }
+
+    .Imager {
+        height: 60px;       /* Set your preferred height for the top bar */
+        width: auto;        /* Keeps original image aspect ratio so text doesn't crop */
+        display: block;
+        object-fit: contain; /* Ensures graphics fit completely inside their boundaries */
+        justify-content: center;
+        align-content: center;
+        
+    }
+</style>

@@ -1,0 +1,155 @@
+@page "/"
+@using Gotho.BlazorPdf
+
+<hr/>
+
+<div class="Button-Holder d-flex gap-2">
+    <button class="toggle btn btn-primary mb-3" @onclick="Toggle">
+        @(IsOpen ? "Collapse" : "Expand")
+    </button>
+    <button class="toggle fullScreen btn btn-secondary mb-3" @onclick="ToggleFullScreen">
+        @(IsFullScreen ? "Exit Full Screen" : "FullScreen")
+    </button>
+</div>
+
+<!-- Collapsible Book Drawer -->
+<div class="Book-Drawer @(IsOpen ? "expanded" : "collapsed")">
+    <div class="Book-Scroller">
+        <button @onclick="() => LoadABook(pdfLook1)">
+            <img src="Look1%20.jpg" class="Img-Size"/>
+        </button>
+        <button @onclick="() => LoadABook(pdfLook2)">
+            <img src="Look2.jpg" class="Img-Size"/>
+        </button>
+        <button @onclick="()=> LoadABook(pdfLook3)">
+            <img src="Look3.jpg" class="Img-Size"/>
+        </button>
+        <button @onclick="()=> LoadABook(pdfLook4)">
+            <img src="Look4.jpg" class="Img-Size"/>
+        </button>
+        <button @onclick="() => LoadABook(pdfLetsGo1)">
+            <img src="LetsGo1.jpg" class="Img-Size"/>
+        </button>
+        <button @onclick="() => LoadABook(pdfLetsGo2)">
+            <img src="LetsGo2.jpg" class="Img-Size"/>
+        </button>
+    </div>
+</div>
+
+<div class="PDF-Holder mt-3 @(IsFullScreen ? "pdf-fullscreen" : "")">
+    @if (IsFullScreen)
+    {
+        <button class="btn btn-danger exit-fullscreen-btn" @onclick="ToggleFullScreen">
+            ✕ Close Full Screen
+        </button>
+    }
+    <!-- Pass the direct path to the PDF inside wwwroot -->
+    <PdfViewer @key="currentBook" Url=@currentBook Height="2000"/>
+</div>
+
+<style>
+    .Book-Drawer {
+        width: 100%;
+        background-color: #f8f9fa;
+        border: 1px solid #dee2e6;
+        transition: height 0.3s ease-in-out, padding 0.3s ease-in-out;
+        overflow: hidden;
+        position: relative;
+        padding: 1rem;
+    }
+
+    .Book-Drawer.expanded {
+        height: 550px;
+        padding: 1rem;
+    }
+
+    .Book-Drawer.collapsed {
+        height: 0px;
+        padding: 0 1rem;
+    }
+
+    .Book-Scroller {
+        display: flex;
+        flex-direction: row;
+        overflow-x: auto;
+        gap: 15px;
+        padding: 10px;
+        width: 100%;
+        max-width: 1500px;
+        background-color: #f9f9f9;
+        align-items: center;
+        /* Changed from center to flex-start so items start fully visible on the left */
+        justify-content: flex-start; 
+    }
+
+    .Img-Size {
+        max-height: 500px;
+        max-width: 300px;
+    }
+
+    /* Normal PDF Holder Style */
+    .PDF-Holder {
+        width: 100%;
+        background-color: #fff;
+        border: 1px solid #dee2e6;
+        position: relative;
+        height: 700px;
+    }
+
+    /* Full Screen CSS Override */
+    .PDF-Holder.pdf-fullscreen {
+        position: fixed !important;
+        top: 0;
+        left: 0;
+        width: 100vw !important;
+        height: 100vh !important;
+        z-index: 9999;
+        margin: 0 !important;
+        border: none;
+        background-color: #333;
+    }
+
+    /* Floating exit button inside full screen mode */
+    .exit-fullscreen-btn {
+        position: absolute;
+        top: 15px;
+        right: 25px;
+        z-index: 10000;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    }
+</style>
+
+@code {
+    public string currentBook = "Look1.pdf"; 
+    public string pdfLook1 = "Look1.pdf";
+    public string pdfLook2 = "Look2.pdf";
+    public string pdfLook3 = "Look3.pdf";
+    public string pdfLook4 = "Look4.pdf";
+    public string pdfLetsGo1 = "LetsGo1.pdf";
+    public string pdfLetsGo2 = "LetsGo2.pdf";
+
+    bool IsOpen = true;
+    bool IsFullScreen = false;
+    PdfViewer view;
+
+    void Toggle()
+    {
+        IsOpen = !IsOpen;
+    }
+
+    void ToggleFullScreen()
+    {
+        IsFullScreen = !IsFullScreen;
+
+        // Automatically collapse the drawer when entering full screen to give maximum reading space
+        if (IsFullScreen)
+        {
+            IsOpen = false;
+        }
+    }
+
+    void LoadABook(string BookURI)
+    {
+        currentBook = BookURI;
+    }
+}
