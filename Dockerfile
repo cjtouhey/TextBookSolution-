@@ -4,10 +4,14 @@ WORKDIR /src
 COPY . .
 RUN dotnet publish "Lesson4uMaterialOrganizer.sln" -c Release -o /output
 
-# Serve Stage using lightweight Nginx
+# Serve Stage using lightweight Nginx with proper MIME types
 FROM nginx:alpine
 WORKDIR /usr/share/nginx/html
+
 # Copy published Blazor WASM wwwroot files to Nginx web root
 COPY --from=build /output/wwwroot .
-# (Optional) If you have custom routing or client-side fallback needs, Nginx handles static files out of the box
+
+# Explicitly add .mjs MIME type mapping to Nginx config so PDF.js worker loads successfully
+RUN sed -i 's/types {/types {\n    application\/javascript mjs;/g' /etc/nginx/mime.types
+
 EXPOSE 80
