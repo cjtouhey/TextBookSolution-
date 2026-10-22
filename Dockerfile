@@ -2,26 +2,20 @@
 FROM mcr.microsoft.com/dotnet/sdk:10.0-preview AS build
 WORKDIR /src
 
-# Install Python3 (required by emscripten/wasm-tools compilation)
 RUN apt-get update && apt-get install -y python3 && rm -rf /var/lib/apt/lists/*
-
 COPY . .
-
-# Install the required WebAssembly build tools workload for Blazor WASM
 RUN dotnet workload install wasm-tools
-
-# Publish the solution
 RUN dotnet publish "Lesson4uMaterialOrganizer.sln" -c Release -o /output
 
 # Serve Stage using lightweight Nginx
 FROM nginx:alpine
 WORKDIR /usr/share/nginx/html
 
-# Copy published Blazor WASM wwwroot files
+# Copy published files
 COPY --from=build /output/wwwroot .
 
-# Explicitly add .mjs MIME type mapping to Nginx config so PDF.js worker loads successfully
-RUN sed -i 's/types {/types {\n    application\/javascript mjs;/g' /etc/nginx/mime.types
+# Fix MIME types for JavaScript modules
+RUN sed -i 's/types {/types {\n    application\/javascript mjs;\n    application\/javascript js;/g' /etc/nginx/mime.types
 
 # Add Nginx routing fallback for Blazor SPA
 RUN echo 'server { \
