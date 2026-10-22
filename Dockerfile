@@ -2,20 +2,19 @@
 FROM mcr.microsoft.com/dotnet/sdk:10.0-preview AS build
 WORKDIR /src
 COPY . .
-# Ensure static web assets from packages are bundled correctly
 RUN dotnet publish "Lesson4uMaterialOrganizer.sln" -c Release -o /output
 
-# Serve Stage using lightweight Nginx with proper MIME types & SPA routing fallback
+# Serve Stage using lightweight Nginx
 FROM nginx:alpine
 WORKDIR /usr/share/nginx/html
 
-# Copy published Blazor WASM wwwroot files (includes bundled package assets)
+# Copy published Blazor WASM wwwroot files
 COPY --from=build /output/wwwroot .
 
-# Explicitly add .mjs MIME type mapping to Nginx config so PDF.js worker loads successfully
-RUN sed -i 's/types {/types {\n    application\/javascript mjs;/g' /etc/nginx/mime.types
+# Safely add .mjs MIME type to Nginx
+RUN echo "    application/javascript mjs;" >> /etc/nginx/mime.types
 
-# Add a basic Nginx config to handle Blazor client-side routing (redirect missing routes to index.html)
+# Add Nginx config for SPA routing fallback
 RUN echo 'server { \
     listen 80; \
     location / { \
