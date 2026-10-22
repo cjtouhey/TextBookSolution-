@@ -1,6 +1,10 @@
 # Build Stage
 FROM mcr.microsoft.com/dotnet/sdk:10.0-preview AS build
 WORKDIR /src
+
+# Install Python3 (required by emscripten/wasm-tools compilation)
+RUN apt-get update && apt-get install -y python3 && rm -rf /var/lib/apt/lists/*
+
 COPY . .
 
 # Install the required WebAssembly build tools workload for Blazor WASM
