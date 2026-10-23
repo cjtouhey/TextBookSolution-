@@ -1,5 +1,6 @@
 @page "/"
 @using Gotho.BlazorPdf
+@using MaterialSolution.Pages
 
 <hr/>
 
@@ -112,7 +113,7 @@
     /* Floating exit button inside full screen mode */
     .exit-fullscreen-btn {
         position: absolute;
-        top: 15px;
+        bottom: 15px;
         right: 25px;
         z-index: 10000;
         box-shadow: 0 4px 6px rgba(0,0,0,0.3);
@@ -120,13 +121,13 @@
 </style>
 
 @code {
-    public string currentBook = "Look1.pdf"; 
-    public string pdfLook1 = "Look1.pdf";
-    public string pdfLook2 = "Look2.pdf";
-    public string pdfLook3 = "Look3.pdf";
-    public string pdfLook4 = "Look4.pdf";
-    public string pdfLetsGo1 = "LetsGo1.pdf";
-    public string pdfLetsGo2 = "LetsGo2.pdf";
+    public string currentBook = StaticLinks.LookPDF1;
+    public string pdfLook1 = StaticLinks.LookPDF1;
+    public string pdfLook2 = StaticLinks.LookPDF2;
+    public string pdfLook3 = StaticLinks.LookPDF3;
+    public string pdfLook4 = StaticLinks.LookPDF4;
+    public string pdfLetsGo1 = StaticLinks.LetsGoPDF1;
+    public string pdfLetsGo2 = StaticLinks.LetsGoPDF2;
 
     bool IsOpen = true;
     bool IsFullScreen = false;
