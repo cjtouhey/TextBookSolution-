@@ -31,4 +31,25 @@
     <script src="_framework/blazor.webassembly#[.{fingerprint}].js"></script>
 </body>
 
+<script>
+    window.cachePdfsInBackground = async function (urls) {
+        if (!('caches' in window)) return;
+
+        try {
+            const cache = await caches.open('pdf-cache-v1');
+            for (let url of urls) {
+                // Check if already cached
+                const match = await cache.match(url);
+                if (!match) {
+                    console.log("Background pre-caching:", url);
+                    await cache.add(url);
+                }
+            }
+            console.log("All PDFs pre-cached successfully!");
+        } catch (err) {
+            console.warn("Background caching error (likely CORS or network):", err);
+        }
+    };
+</script>
+
 </html>
