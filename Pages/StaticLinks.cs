@@ -15,7 +15,7 @@ public static class StaticLinks
     public static string LetsGoPDF2 =
         "https://github.com/cjtouhey/MaterialSolution/releases/download/PDFS/LetsGo2.pdf";
     public static string Re1PDF = 
-        "";
+        "https://f005.backblazeb2.com/file/L4Umats/Reading+Explorer+1+3rd+ed+(1).pdf";
      public static string Re2PDF = 
-        "";
+        "https://f005.backblazeb2.com/file/L4Umats/Reading+Explorer+2+(Third+Edition).pdf";
 }
